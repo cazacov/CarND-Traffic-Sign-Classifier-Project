@@ -5,3 +5,5 @@ models
 *.swp
 *.p
 testdata
+session
+
