@@ -6,4 +6,4 @@ models
 *.p
 testdata
 session
-
+logs
