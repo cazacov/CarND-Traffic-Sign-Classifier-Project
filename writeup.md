@@ -122,27 +122,27 @@ My final model consisted of the following layers:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Input         		| 32x32x3 Y-U-V image   						|
-| Input Y-Channel       | 32x32x1 Grayscale								| 
-| Convolution 5x5     	| 1x1 stride, valid padding, outputs 28x28x6 	|
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 14x14x6  				|
-| Convolution 5x5	    | 1x1 stride, valid padding, outputs 10x10x16   |
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 5x5x16  					|
-| Input U-Channel       | 32x32x1 color									|
-| Avg pooling			| 4x4 stride, downscales input to 8x8x1			|
-| Input V-Channel       | 32x32x1 color									|
-| Avg pooling			| 4x4 stride, downscales input to 8x8x1			|
-| Inception				| Flatten and concatenate. Output 528x1			|
-| Fully-connected		| 528->200 nodes								|
-| RELU					|												|
-| Drop					| Keep probability 50%     					    |
-| Fully-connected		| 200->100 nodes								|
-| RELU					|												|
-| Fully-connected		| 100->43 nodes	(number of classes=				|
-| Softmax				| 	        									|
-| Loss-function		    | Cross-entropy + reduce mean operation			|
+|Input         		|32x32x3 Y-U-V image   						|
+|Input Y-Channel       |32x32x1 Grayscale								| 
+|Convolution 5x5     	|1x1 stride, valid padding, outputs 28x28x6 	|
+|RELU					|												|
+|Max pooling	      	|2x2 stride,  outputs 14x14x6  				|
+|Convolution 5x5	    |1x1 stride, valid padding, outputs 10x10x16   |
+|RELU					|												|
+|Max pooling	      	|2x2 stride,  outputs 5x5x16  					|
+|Input U-Channel       |32x32x1 color									|
+|Avg pooling			|4x4 stride, downscales input to 8x8x1			|
+|Input V-Channel       |32x32x1 color									|
+|Avg pooling			|4x4 stride, downscales input to 8x8x1			|
+|Inception				|Flatten and concatenate. Output 528x1			|
+|Fully-connected		|528->200 nodes								|
+|RELU					|												|
+|Drop					|Keep probability 50%     					    |
+|Fully-connected		|200->100 nodes								|
+|RELU					|												|
+|Fully-connected		|100->43 nodes	(number of classes=				|
+|Softmax				| 	        									|
+|Loss-function		    |Cross-entropy + reduce mean operation			|
 
  
 ####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
