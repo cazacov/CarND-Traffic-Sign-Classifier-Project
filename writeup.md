@@ -1,14 +1,11 @@
 #**Traffic Sign Recognition** 
 
-##Writeup Template
-
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
 **Build a Traffic Sign Recognition Project**
 
 The goals / steps of this project are the following:
+
 * Load the data set (see below for links to the project data set)
 * Explore, summarize and visualize the data set
 * Design, train and test a model architecture
@@ -34,30 +31,87 @@ The goals / steps of this project are the following:
 ---
 ###Writeup / README
 
-####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
-
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+You're reading it! and here is a link to my [project code](https://github.com/cazacov/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
 ###Data Set Summary & Exploration
 
 ####1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
 
+The data set consists of RGB images 32x32 pixels each.
+
 I used the pandas library to calculate summary statistics of the traffic
 signs data set:
 
-* The size of training set is ?
-* The size of the validation set is ?
-* The size of test set is ?
-* The shape of a traffic sign image is ?
-* The number of unique classes/labels in the data set is ?
+* The size of training set is 34799
+* The size of the validation set is 4410
+* The size of test set is 12630
+* The shape of a traffic sign image is 32x32 pixels, 3 RGB channels.
+* The number of unique classes/labels in the data set is 43
 
 ####2. Include an exploratory visualization of the dataset.
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
+Here is an exploratory visualization of the data set. It is a bar chart showing how the data is distributed between image classes. The distribution is not uniform and probably represents real distribution on German streets.
 
-![alt text][image1]
+
+![Image classes distribution](images/distribution.png)
+
 
 ###Design and Test a Model Architecture
+
+As a first strp I decided to convert images from RGB to YUV color space. The Y channel is grascale representation of the image and is useful for detection of small details. The U and V channels encode color information and help to distinguish between sign types as priority/mandatory/warning/prohibitory.
+
+<table>
+	<tr>
+		<td>Source image</td><td>Y-Channel</td><td>U-Channel</td><td>V-Channel</td>
+	</tr>
+	<tr>
+		<td><img src="images/rgb.jpg" width=128 height= 128/></td>
+		<td><img src="images/y.jpg" width=128 height= 128/></td>
+		<td><img src="images/u.jpg" width=128 height= 128/></td>
+		<td><img src="images/v.jpg" width=128 height= 128/></td>
+	</tr>
+</table>
+
+
+In grayscale image from the Y channel I then increase contrast by doing histogram correction.
+
+As a last step I normalize values converting numbers from range [0..255] to [-1..1]. That makes learning more stable and estimation of weights deviation easier.       
+
+
+First training attempts have shown that the accuracy on the training images quickly reached 99%, while the accuracy on validation dataset bounced around 90%:
+
+> EPOCH 6 ...
+Training Accuracy = 0.972 Validation Accuracy = 0.891
+
+> EPOCH 7 ...
+Training Accuracy = 0.979 Validation Accuracy = 0.910
+
+> EPOCH 8 ...
+Training Accuracy = 0.984 Validation Accuracy = 0.893
+
+> EPOCH 9 ...
+Training Accuracy = 0.991 Validation Accuracy = 0.904
+
+This is a clear sign of overfitting when the network just rememberes training images and fails to generalize features. To make learning more stable and force the network to find general features I created more data by slightly modifying source images.
+
+From every source image I generated another five by randomly applying the following transformations:
+
+* Rotation [-5..+5] degrees.
+* Translation [-2..+2] pixels in X and Y directions.
+* Scaling [100..120] %.
+
+That is done in Python function **transform_image**.
+
+The final training dataset has 208794 images and looks like the following:
+
+<img src="images/full_dataset.png" />
+
+
+
+
+
+
+
 
 ####1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
