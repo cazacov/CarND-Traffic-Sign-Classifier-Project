@@ -1,4 +1,4 @@
-#**Traffic Sign Recognition**# 
+# Traffic Sign Recognition # 
 
 ---
 
@@ -14,28 +14,17 @@ The goals / steps of this project are the following:
 * Summarize the results with a written report
 
 
-[//]: # (Image References)
-
-[image1]: ./examples/visualization.jpg "Visualization"
-[image2]: ./examples/grayscale.jpg "Grayscaling"
-[image3]: ./examples/random_noise.jpg "Random Noise"
-[image4]: ./examples/placeholder.png "Traffic Sign 1"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
-
 ## Rubric Points ###
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
 
 ---
-###Writeup / README###
+### Writeup / README ###
 
 You're reading it! and here is a link to my [project code](https://github.com/cazacov/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
-###Data Set Summary & Exploration###
+### Data Set Summary & Exploration ###
 
-####1. Summary ####
+#### 1. Summary ####
 
 The data set consists of RGB images 32x32 pixels each.
 
@@ -48,7 +37,7 @@ signs data set:
 * The shape of a traffic sign image is 32x32 pixels, 3 RGB channels.
 * The number of unique classes/labels in the data set is 43
 
-####2. Exploration####
+#### 2. Exploration ####
 
 Here is an exploratory visualization of the data set. It is a bar chart showing how the data is distributed between image classes. The distribution is not uniform and probably represents real distribution on German streets.
 
@@ -56,8 +45,8 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 ![Image classes distribution](images/distribution.png)
 
 
-###Design and Test a Model Architecture###
-####1.1 Preprocessing ####
+### Design and Test a Model Architecture ###
+#### 1.1 Preprocessing ####
 As a first strp I decided to convert images from RGB to YUV color space. The Y channel is grascale representation of the image and is useful for detection of small details. The U and V channels encode color information and help to distinguish between sign types as priority/mandatory/warning/prohibitory.
 
 <table>
@@ -77,7 +66,7 @@ In grayscale image from the Y channel I then increase contrast by doing histogra
 
 As a last step I normalize values converting numbers from range [0..255] to [-1..1]. That makes learning more stable and estimation of weights deviation easier.       
 
-####1.2 Augmented dataset ####
+#### 1.2 Augmented dataset ####
 
 First training attempts have shown that the accuracy on the training images quickly reaches 99%, while the accuracy on validation dataset keeps bouncing around 90%:
 
@@ -111,7 +100,7 @@ I did not change the image distribution between classes.
 
 
 
-####2. Model Architecture ####
+#### 2. Model Architecture ####
 
 There are two data flows through the network. 
 
