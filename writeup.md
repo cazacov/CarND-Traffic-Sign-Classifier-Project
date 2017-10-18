@@ -266,6 +266,6 @@ The model was able to correctly guess 20 of the 20 real traffic signs, which giv
 The model was not absolutelly sure with the sign "Trafic signals" that was predicted correctly, but the next candidate "General caution" also has non-zero score. As expected, the model has some difficulties with the similar looking warning signs.
 
 
-Top 5 predictions for every real image:
+#### 3. Top 5 predictions for every real image ####
 
 <img src="./images/predictions.png">
