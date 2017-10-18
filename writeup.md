@@ -250,11 +250,11 @@ Here are the results of the prediction:
 | Stop | Stop 100.000% | Yield  0.000% |
 | No entry | No entry 100.000% | Stop  0.000% |
 | General caution | General caution 100.000% | Pedestrians  0.000% |
-| Road narrows on the right | Road narrows on the right **99.997%** | Pedestrians  0.002% |
+| Road narrows on the right | **Road narrows on the right 99.997%** | Pedestrians  0.002% |
 | Road work | Road work 100.000% | Bumpy road  0.000% |
-| Traffic signals | Traffic signals **90.489%** | General caution  9.511% |
+| Traffic signals | **Traffic signals 90.489%** | General caution  9.511% |
 | Children crossing | Children crossing 100.000% | Bicycles crossing  0.000% |
-| Bicycles crossing | Bicycles crossing **99.767%** | Children crossing  0.233% |
+| Bicycles crossing | **Bicycles crossing 99.767%** | Children crossing  0.233% |
 | Turn right ahead | Turn right ahead 100.000% | Ahead only  0.000% |
 | Go straight or right | Go straight or right 100.000% | Ahead only  0.000% |
 | Keep right | Keep right 100.000% | Turn left ahead  0.000% |
