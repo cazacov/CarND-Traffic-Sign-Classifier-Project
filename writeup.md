@@ -26,7 +26,7 @@ You're reading it! and here is a link to my [project code](https://github.com/ca
 
 #### 1. Summary ####
 
-The data set consists of RGB images 32x32 pixels each.
+The data set consists of RGB images of German traffic signs, 32x32 pixels each.
 
 I used the pandas library to calculate summary statistics of the traffic
 signs data set:
@@ -39,7 +39,7 @@ signs data set:
 
 #### 2. Exploration ####
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data is distributed between image classes. The distribution is not uniform and probably represents real distribution on German streets.
+Here is an exploratory visualization of the data set. It is a bar chart showing how the data is distributed between image classes. The distribution is not uniform and probably represents the real sign distribution on German streets.
 
 
 ![Image classes distribution](images/distribution.png)
@@ -62,7 +62,7 @@ As a first strp I decided to convert images from RGB to YUV color space. The Y c
 </table>
 
 
-In grayscale image from the Y channel I then increase contrast by doing histogram correction.
+In the grayscale image from the Y channel I then increase contrast by doing histogram correction.
 
 As a last step I normalize values converting numbers from range [0..255] to [-1..1]. That makes learning more stable and estimation of weights deviation easier.       
 
@@ -82,7 +82,7 @@ Training Accuracy = 0.984 Validation Accuracy = 0.893
 > EPOCH 9 ...
 Training Accuracy = 0.991 Validation Accuracy = 0.904
 
-This is a clear sign of overfitting when the network just rememberes training images and fails to generalize features. To make learning more stable and force the network to find general features I created more data by slightly modifying source images.
+This is a clear sign of overfitting when the network just rememberes training images and fails to generalize features. To make learning more stable and force the network to find general properties I created more data by slightly modifying source images.
 
 From every source image I generated another five by randomly applying the following transformations:
 
@@ -108,10 +108,10 @@ There are two data flows through the network.
  
 - The color channels U and V are thought to extract general information about color and the shape of the sign. That should help the neural network to quickly detect the type of sign like is it a warning (red triangle) or a mandatory sign (blue circle).
  
-The outputs of feature- and color-detection data flows are then flattend and mixed in inception layer that is then   
+The outputs of feature- and color-detection data flows are then flattend and mixed in the inception layer that is then   
 passed to 3 fully-connected layers for the final classification.
 
-To prevent network from overfitting there is a drop layer between fully-connected layers that randomly drops 50% of input. That forces the network to learn general features instead of simply memorizing small image details. 
+To prevent network from over fitting there is a drop layer between fully-connected layers that randomly drops 50% of input. That forces the network to learn general features instead of simply memorizing small image details. 
 
 
 <img src="images/architecture.png" /> 
@@ -144,11 +144,11 @@ My final model consisted of the following layers:
 |Softmax				| 	        									|
 
  
-####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+#### 3. Training the model ####
 
 To train the model, I used reduce-mean operation on cross-entropy as the cost function. The reference LeNet-5 implementation uses hard-coded mean deviation for initial values of weights, I replaced it with the inverse sqaure root of weights count as recomended in DeepLearning Nanodegree.
 
-The training is done with batch size 128 in 25 epochs. After 20 epochs the error curve si getting flat and further culculations do not improve  accuracy that much. 
+The training is done with batch size 128 in 25 epochs. After 20 epochs the error curve is getting flat and further culculations do not improve  accuracy that much. Learning rate of 0.001 provides good results.
 
 <img src="images/error.png" /> 
 
@@ -156,29 +156,30 @@ The network is still overfitting a bit and should be trained on a bigger dataset
 
 The Adam optimizer works pretty well. After 25 epochs the network reaches accuracy of about 95%.
 
-####4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+#### 4. Results ####
 
 My final model results were:
 * training set accuracy of 98.1%
 * validation set accuracy of 95.2% 
 * test set accuracy 12045 of 12630 = 95.4%
 
-If an iterative approach was chosen:
+The model was improved in iterative steps:
+
 * As starting point I took the LeNet-5 architecture
 * That architecure has accuracy about 88-90% on the German Trafic Signs Dataset.
 * To improve the accuracy I splited images in Y-U-V channels. The Y (grascale) channel is used for small detail detecion, while color channels U and V help the network to capture color and shape of an image.   
-* Increasing contrast of the Y channel also improved the accuracy.
-* The network showed great accuracy >99% on training dataset, but only 90% on the validation images. That means it just "rememebered" training images.   
-* To reduce overfitting I added drop layer with keep probability of 50%. That improved the accuracy on the validation dataset. Probability values over 70% do not regulaize the model enough and drop more then half of values makes learining much slower.
-* Further I decided to generate more training images by slightly modifing existing ones.
-* The convolution layers were forced to "learn" the structure of signs and do not focus on exact location of features.  
+* Increasing contrast of the Y channel improved the accuracy.
+* The network showed great accuracy >99% on training dataset, but only 90% on validation images. That means it just "rememebered" the training images.   
+* To reduce overfitting I added a drop layer with keep probability of 50%. That improved the accuracy on the validation dataset. Probability values >70% do not regulaize the model enough and dropping more then half of values makes learining much slower. 50% seems to be a good compromise.
+* Then I decided to generate more training images by slightly modifing existing ones. That is done by slightly rotating, shifting and scaling source images.
+* This small changes forced convolution layers to "learn" the structure of signs and do not focus on exact location of details.  
 * Other fine tuning was increasing the nuber of epochs to 25. I was using GPU instance in AWS cloud and was still able to run full training in less than 5 minutes.
-* Finally I got accuracy of 95%. The model is still overfitting a bit, and probably needs to be trained with more real data.
+* Finally I got accuracy of 95%. The model is still overfitting a bit and probably needs to be trained with more real data.
 * I think the most important architecture decision was to have two data flows: one for detail detection and one for color/shape detection and mix them in the inception layer. 
-* Further improvement could be batch normalization of conv layer outputs and using **leaky** ReLU activation as I did in Image Classification project in DeepLearining nanodegree. 
+* Possible improvement could be  a batch normalization of conv layer outputs and using **leaky** ReLU activation as I did in Image Classification project in DeepLearining nanodegree. 
  
 
-###Test a Model on New Images
+### Testing the Model on New Images
 
 #### 1. Real images ####
 
@@ -219,9 +220,9 @@ The most interesting images are the following:
 
 <img src="./images/stop.png" width=200 height=200>
 
-The stop sign is hanging pretty high and I made the photo from the ground level. The sign on the picture has oval shape and is squeezed vertically.
+This stop sign is hanging pretty high and I made the photo from the ground level. The sign on the picture has oval shape and is squeezed vertically.
 
-The second group of signs that can be hard to identify are the warning signs. Downscaled to 32x32 pixels they all look same like "a red triangle with some vertical noisy structure in the middle"
+The second group of signs that can be hard to identify are the warning signs. Downscaled to 32x32 pixels they all are looking the same, something like a "red triangle with vertical noisy structure in the middle".
 
 <table>
 	<tr>
@@ -261,7 +262,7 @@ Here are the results of the prediction:
 | Roundabout mandatory | Roundabout mandatory 100.000% | Go straight or left  0.000% |
 | End of no passing | End of no passing 99.998% | End of all speed and passing limits  0.002% |
 
-The model was able to correctly guess 20 of the 20 real traffic signs, which gives an accuracy of 100%. Probably it's because I made photos in the middle of a cloudy day and there are no contrast shadows that could distort the shape. The lighting conditions were almost perfect.
+The model was able to correctly guess 20 of the 20 real traffic signs, which gives an accuracy of 100%. Probably it's because I made photos in the middle of a cloudy day with no contrast shadows that could distort the shape. The lighting conditions were almost perfect.
 
 The model was not absolutelly sure with the sign "Trafic signals" that was predicted correctly, but the next candidate "General caution" also has non-zero score. As expected, the model has some difficulties with the similar looking warning signs.
 
